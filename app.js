@@ -29,7 +29,7 @@ const models = dbModule.models;
     // Sync the models
     console.log("Synchronizing the models with the database...");
     await sequelize.sync();
-    console.log("Hello");
+    console.log("Hello from the project");
   } catch (error) {
     console.log(error);
   }
