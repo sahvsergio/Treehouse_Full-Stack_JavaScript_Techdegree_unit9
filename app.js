@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require("path");
 // load modules
 const express = require('express');
 const morgan = require('morgan');
@@ -14,6 +15,28 @@ const app = express();
 app.use(morgan('dev'));
 
 // setup a friendly greeting for the root route
+const dbModule = require("./models");
+const sequelize = dbModule.sequelize;
+const models = dbModule.models;
+// use async and await to connect to the database
+
+(async () => {
+  try {
+    // Test the connection to the database
+    await sequelize.authenticate();
+    console.log("Connection to the database successful!");
+
+    // Sync the models
+    console.log("Synchronizing the models with the database...");
+    await sequelize.sync();
+    console.log("Hello");
+  } catch (error) {
+    console.log(error);
+  }
+})();
+
+
+
 app.get('/', (req, res) => {
   res.json({
     message: 'Welcome to the REST API project!',
