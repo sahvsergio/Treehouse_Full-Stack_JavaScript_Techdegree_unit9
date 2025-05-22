@@ -23,7 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
   });
   User.associate=(models)=>{
-    User.hasMany(models.Course);
+    User.hasMany(models.Course, {
+      foreignKey: {
+        fieldName: "userId",
+        allowNull:false
+      },
+    });
   }
   return User;
 };
