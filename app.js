@@ -42,6 +42,18 @@ app.get('/', (req, res) => {
     message: 'Welcome to the REST API project!',
   });
 });
+app.get('/api/users',(req, res)=>{  
+   /* return all properties and values for th
+    currently authenticated User 
+    along with a 200 HTTP status code.
+    */
+    res.status(200);
+    res.json({user});
+
+
+
+});
+
 
 // send 404 if no other route matched
 app.use((req, res) => {
