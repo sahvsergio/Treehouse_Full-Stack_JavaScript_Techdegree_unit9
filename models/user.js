@@ -13,14 +13,42 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    emailAddress: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  User.init(
+    {
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        notEmpty: {
+          msg: "Title is required",
+        },
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        notEmpty: {
+          msg: "Title is required",
+        },
+      },
+      emailAddress: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        notEmpty: {
+          msg: "Title is required",
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        notEmpty: {
+          msg: "Title is required",
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "User",
+    }
+  );
   return User;
 };
+module.exports=router;

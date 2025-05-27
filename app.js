@@ -4,6 +4,7 @@ var path = require("path");
 // load modules
 const express = require('express');
 const morgan = require('morgan');
+const routes=require('./routes')
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -21,7 +22,8 @@ app.use(morgan('dev'));
 const dbModule = require("./models");
 const sequelize = dbModule.sequelize;
 const models = dbModule.models;
-
+app.use(express.json());
+app.use('/api',routes)
 
 // use async and await to connect to the database
 
@@ -42,94 +44,9 @@ const models = dbModule.models;
 
 
 
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to the REST API project!',
-  }
-);
-});
-
-app.get('/api/users',(req, res)=>{  
 
 
 
- 
-
- /*returns all properties and values for 
- the currently authenticated
-  User along with a 200 HTTP status code.
-   */
- 
- 
-  
-
-    res.status(200);
- 
- 
-});
-
-app.get('/api/courses',(req, res)=>{
-  /*
-
-  Return all courses including the User object
-   associated with each course and a 200 HTTP status code.
-  */
-   let allCourses=courses.findAll();
-   allCourses.then((coursesInfo)=>{
-     res.status(200);
-     res.json({coursesInfo})
-
-   }).catch((err)=>{
- 
-   }
-
-)
- 
-
-})
- 
-     
-  
-
-
-
-
-app.get('/api/courses/:id',(req, res)=>{
-  /*
-
-  Return the corresponding course including the User object associated 
-  with that course and a 200 HTTP status code.
-  */
-  let course=courses.findByPk(req.params.id);
-  if(course){
- course.then((courseInfo)=>{
-  res.status(200);
-  res.json({courseInfo});
- })
-}
-
- })
-
-
- 
-
-
-app.post("/api/users", (req, res) => {
-  /*This route should create a new user, 
-  set the Location header to "/", 
-  and return a 201 HTTP status code and no content.*/
-  res.status(201);
-  res.json({ user });
-});
-
-app.post('/api/courses', (req, res)=>{
-
-  /*Create a new course, set the Location
-   header to the URI for the newly created course,
-  and return a 201 HTTP status code and no content.*/
-
-  res.status(201)
-})
 
 
 
@@ -159,3 +76,5 @@ app.set('port', process.env.PORT || 5000);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express server is listening on port ${server.address().port}`);
 });
+
+exports.module=app
