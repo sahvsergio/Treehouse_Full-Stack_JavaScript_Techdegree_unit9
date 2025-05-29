@@ -18,30 +18,49 @@ module.exports = (sequelize, DataTypes) => {
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
-        notEmpty: {
-          msg: "Title is required",
+        validate: {
+          notEmpty: {
+            msg: "A first name  is required"
+          },
         },
       },
+
+
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate:{
         notEmpty: {
-          msg: "Title is required",
-        },
-      },
+          msg: "last name  is required",
+        }
+      }
+    },   
+
+      
       emailAddress: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate:{
+        unique: true,
         notEmpty: {
-          msg: "Title is required",
+          msg: "Email  is required",
+        isEmail: {
+          msg: "Please provide a valid e-mail address",
+        }
         },
+      }
+
+
+        
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate:{
         notEmpty: {
-          msg: "Title is required",
-        },
+          msg: "password  is required",
+        }
+      }
       },
     },
     {
@@ -51,4 +70,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return User;
 };
-module.exports=router;

@@ -55,9 +55,31 @@ router.post("/users", (req, res, next) => {
   /*This route should create a new user, 
   set the Location header to "/", 
   and return a 201 HTTP status code and no content.*/
-  res.status(201);
-  res.json({ user });
-});
+  users.create(req.body).then((newUser)=>{
+    res.location('/').status(201)
+
+
+  }).catch((err)=>{
+    res.location('/').status(400);
+    if (err.name==='SequelizeValidationError'){
+      
+      //res.json(`
+        //  ${err.name}:
+        //${err.type}
+       //${err.message}
+      //`);
+      res.json(err);
+     
+    }
+    else{
+      next(err);
+    }
+  });
+})
+
+
+
+
 
 router.post("/courses/", (req, res, next) => {
   /*Create a new course, set the Location
@@ -77,4 +99,4 @@ router.put("/courses/:id", (req, res, next) => {
   });
 });
 
-exports.module=router;
+module.exports=router;

@@ -23,7 +23,7 @@ const dbModule = require("./models");
 const sequelize = dbModule.sequelize;
 const models = dbModule.models;
 app.use(express.json());
-app.use('/api',routes)
+app.use('/api',routes);
 
 // use async and await to connect to the database
 
