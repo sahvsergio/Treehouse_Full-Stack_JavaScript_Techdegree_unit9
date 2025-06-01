@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Course.belongsTo(models.user,{
+        foreignKey:'userId'
+      })
     }
   }
   Course.init(
@@ -23,13 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Course",
     }
   );
-  Course.associate = (models) => {
-    Course.belongsTo(models.User, {
-      foreignKey: {
-        fieldName: "userId",
-        allowNull: false,
-      },
-    });
-  };
+ 
   return Course;
 };
