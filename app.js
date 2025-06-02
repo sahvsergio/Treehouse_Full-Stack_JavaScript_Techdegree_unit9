@@ -22,6 +22,8 @@ app.use(morgan('dev'));
 const dbModule = require("./models");
 const sequelize = dbModule.sequelize;
 const models = dbModule.models;
+
+
 app.use(express.json());
 app.use('/api',routes);
 
@@ -76,5 +78,4 @@ app.set('port', process.env.PORT || 5000);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express server is listening on port ${server.address().port}`);
 });
-
-exports.module=app
+module.exports = app;

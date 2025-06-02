@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
  
     }
   }
+
+
+
   User.init(
     {
       firstName: {
@@ -66,28 +69,28 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+
       confirmedPassword:{
         type:DataTypes.STRING,
         allowNull:false,
         set(val){
           if(val===this.password){
             const hashedPassword=bcrypt.hashSync(val, 10);
-            this.setDataValue('confirmedPassword', hashedPassword)
-
-          }
+            this.setDataValue('confirmedPassword', hashedPassword)}
 
           },
         validate:{
           notNull:{
             msg:"Both passwords must match"
-          }
+          },
         }
 
 
         }
 
 
-      }
+    
+    
     },
     {
       sequelize,

@@ -3,21 +3,46 @@ const router=express.Router();
 
 const users = require("./models/").User;
 const courses = require("./models").Course;
+const { authenticateUser } = require("./middleware/auth-user");
+const { asyncHandler } = require("./middleware/async-handler");
 
 
-router.get("/", (req, res) => {
-  res.json({
-    message: "Welcome to the REST API project!",
-  });
-});
+router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
+    const user = req.currentUser;
+    res.status(200).json({
+      name:user.lastName
+    });
+  })
+);
 
-router.get("/users", (req, res) => {
-  /*returns all properties and values for 
- the currently authenticated
-  User along with a 200 HTTP status code.
-   */
-  res.status(200);
-});
+  
+ 
+  
+
+
+
+
+
+  
+
+   
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+  
 
 router.get("courses", (req, res, next) => {
   /*
