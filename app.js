@@ -40,7 +40,7 @@ app.use('/api',routes);
     await sequelize.sync();
     console.log("Hello from the project");
   } catch (error) {
-    console.log(error);
+    console.log('Error Connection to the database:',error);
   }
 })();
 
