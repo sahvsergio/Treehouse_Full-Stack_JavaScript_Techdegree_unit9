@@ -158,7 +158,7 @@ router.delete(
   if (course) {
     course.then((courseInfo) => {
       courses.destroy(course);
-      res.status(204);
+      res.status(204).end();
     })
   }
   })
