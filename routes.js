@@ -54,7 +54,7 @@ router.post("/users", (req, res, next) => {
   set the Location header to "/", 
   and return a 201 HTTP status code and no content.*/
   users.create(req.body).then((newUser)=>{
-    res.location('/').status(201)
+    res.location('/').status(201).end();
 
 
   }).catch((err)=>{
