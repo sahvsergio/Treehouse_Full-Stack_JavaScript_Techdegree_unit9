@@ -1,10 +1,7 @@
-'use strict';
-const bcrypt = require('bcrypt');
+"use strict";
+const bcrypt = require("bcrypt");
 
-
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -13,16 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-     
-
-        User.hasMany(models.Course,{foreignKey:'userId'})
- 
+      this.hasMany(models.Course, {
+        foreignKey: {
+          fieldName: "userId",
+          allowNull: false,
+        },
+      });
     }
   }
-
-
-
   User.init(
     {
       firstName: {
@@ -34,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -44,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-
       emailAddress: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -52,45 +45,29 @@ module.exports = (sequelize, DataTypes) => {
           msg: "The email address you entered already exists",
         },
         validate: {
-          notEmpty: {
+          notNull: {
             msg: "Email  is required",
           },
-          isEmail: {
+          notEmpty: {
             msg: "Please provide a valid e-mail address",
-          }
+          },
         },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        set(val) {
+          if (val) {
+            const hashedPassword = bcrypt.hashSync(val, 10);
+            this.setDataValue("password", hashedPassword);
+          }
+        },
         validate: {
           notEmpty: {
             msg: "password  is required",
           },
         },
       },
-
-      confirmedPassword:{
-        type:DataTypes.STRING,
-        allowNull:false,
-        set(val){
-          if(val===this.password){
-            const hashedPassword=bcrypt.hashSync(val, 10);
-            this.setDataValue('confirmedPassword', hashedPassword)}
-
-          },
-        validate:{
-          notNull:{
-            msg:"Both passwords must match"
-          },
-        }
-
-
-        }
-
-
-    
-    
     },
     {
       sequelize,
