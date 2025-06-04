@@ -64,7 +64,7 @@ router.post("/users", (req, res, next) => {
   set the Location header to "/", 
   and return a 201 HTTP status code and no content.*/
   users.create(req.body).then((newUser)=>{
-    res.location('/').status(201).end();
+    res.location('/').status(201)
 
 
   }).catch((err)=>{
@@ -110,16 +110,7 @@ router.post(
 
 
 
- /*
-router.get(
-  "/users",
-  authenticateUser,
-  asyncHandler(async (req, res) => {
-    const user = await req.currentUser;
-    res.json(user);
-  })
-);
-*/
+
 
 router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res) => {
   /*
@@ -140,7 +131,40 @@ router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res) => {
 
 
 
+
+ /*
+router.get(
+  "/users",
+  authenticateUser,
+  asyncHandler(async (req, res) => {
+    const user = await req.currentUser;
+    res.json(user);
+  })
+);
+*/
+
 // Delete routes
+router.delete("/courses/:id",
+  authenticateUser,
+  asyncHandler(async(req,res)=>{
+    let course=await courses.findByPk(req.params.id)
+    await course.destroy();
+    res.status(204).end();
+
+
+  }))
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
