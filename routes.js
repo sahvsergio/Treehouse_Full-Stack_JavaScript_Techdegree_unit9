@@ -142,7 +142,7 @@ router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res,next) =
     res.status(404).json({message:'No course found'});
   }
   else{
-  course.update(req.body);
+   await course.update(req.body);
     res.status(204).end();
 
   }}
