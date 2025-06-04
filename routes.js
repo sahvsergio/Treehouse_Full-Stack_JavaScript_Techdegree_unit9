@@ -19,27 +19,22 @@ router.get(
 
 
   
-router.get("courses",  asyncHandler(async (req, res, next) => {
+router.get("/courses", async (req, res, next) => {
   /*
 
   Return all courses including the User object
    associated with each course and a 200 HTTP status code.
   */
-  let allCourses =  await courses.findAll({
+   let allCourses= await courses.findAll({include:{
+    model:users
+   }});
+   res.status(200).json(allCourses).end()
+   
 
-    include:[
 
-      {
-        model:User,
-      },
-    ],
-  });
-  if (allCoures){
- res.status(200).json(allCourses);
- process.exit();
-  }
-  }
-))
+  })
+
+
   
 
 router.get("/courses/:id", (req, res) => {
@@ -94,16 +89,16 @@ router.post("/users", (req, res, next) => {
 
 router.post(
   "/courses/",
-  authenticateUser,
-  asyncHandler(async (req, res) => {
+  
+ async (req, res) => {
     /*Create a new course, set the Location
    header to the URI for the newly created course,
   and return a 201 HTTP status code and no content.*/
 
-  try{
+
     let course = req.body;
     if (!course) {
-      res.status(400).res.jon({ message: "New Course info was invalid" });
+      res.status(400).res.json({ message: "New Course info was invalid" });
     } else {
       newCourse = await courses.create(course);
       newId = await newCourse.id;
@@ -111,25 +106,8 @@ router.post(
 
       res.location(location).status(201).end();
     }
-  }catch(err){
-    if (err.name === "SequelizeValidationError") {
-      //res.json(`
-      //  ${err.name}:
-      //${err.type}
-      //${err.message}
-      //`);
-      res.json(err);
-    } else {
-      next(err);
-    }
+  })
 
-
-  }})
-
-
- 
-);
-   
 
 
  /*
@@ -165,19 +143,8 @@ router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res) => {
 // Delete routes
 
 
-router.delete(
-  "/courses/:id/delete",
-  authenticateUser,
-  asyncHandler(async (req, res) => {
-    let course = courses.findByPk(req.params.id);
-  if (course) {
-    course.then((courseInfo) => {
-      courses.destroy(course);
-      res.status(204).end();
-    })
-  }
-  })
-);
+
+
 
 
 
