@@ -64,7 +64,7 @@ router.post("/users", (req, res, next) => {
   set the Location header to "/", 
   and return a 201 HTTP status code and no content.*/
   users.create(req.body).then((newUser)=>{
-    res.location('/').status(201)
+    res.location('/').status(201).end()
 
 
   }).catch((err)=>{
@@ -76,7 +76,7 @@ router.post("/users", (req, res, next) => {
         //${err.type}
        //${err.message}
       //`);
-      res.json(err);
+      res.json(err.message).end();
      
     }
     else{
@@ -90,14 +90,17 @@ router.post("/users", (req, res, next) => {
 router.post(
   "/courses/",
   
- async (req, res) => {
+ async (req, res,next) => {
     /*Create a new course, set the Location
    header to the URI for the newly created course,
   and return a 201 HTTP status code and no content.*/
+  try{
 
 
-    let course = req.body;
+    let course = await req.body;
+   
     if (!course) {
+      
       res.status(400).res.json({ message: "New Course info was invalid" });
     } else {
       newCourse = await courses.create(course);
@@ -106,17 +109,34 @@ router.post(
 
       res.location(location).status(201).end();
     }
+  }
+  catch(err){
+    if (err.name === "SequelizeValidationError") {
+      //res.json(`
+      //  ${err.name}:
+      //${err.type}
+      //${err.message}
+      //`);
+      res.status(400).json(err.message).end();
+    } else {
+      next(err);
+    }
+
+  }
+
+ 
   })
 
 
 
 
 
-router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res) => {
+router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res,next) => {
   /*
   Update the corresponding course and return a 2
   4 HTTP status code and no content.
   */
+  try{
   course =  await courses.findByPk(req.params.id);
   if(!course){
     res.status(500).json({message:'No course found'});
@@ -126,22 +146,20 @@ router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res) => {
     res.status(204).end();
 
   }}
-))
+catch(err){
+  if (err.name === "SequelizeValidationError") {
+    //res.json(`
+    //  ${err.name}:
+    //${err.type}
+    //${err.message}
+    //`);
+    res.status(400).json(err.message).end();
+  } else {
+    next(err);
+  }
 
-
-
-
-
- /*
-router.get(
-  "/users",
-  authenticateUser,
-  asyncHandler(async (req, res) => {
-    const user = await req.currentUser;
-    res.json(user);
-  })
-);
-*/
+}
+}))
 
 // Delete routes
 router.delete("/courses/:id",
@@ -150,9 +168,7 @@ router.delete("/courses/:id",
     let course=await courses.findByPk(req.params.id)
     await course.destroy();
     res.status(204).end();
-
-
-  }))
+}))
 
 
 
