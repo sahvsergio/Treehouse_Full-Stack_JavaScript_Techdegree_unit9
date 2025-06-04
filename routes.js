@@ -16,36 +16,51 @@ router.get(
   })
 );
 
+
+
   
-router.get("courses", (req, res, next) => {
+router.get("courses",  asyncHandler(async (req, res, next) => {
   /*
 
   Return all courses including the User object
    associated with each course and a 200 HTTP status code.
   */
-  let allCourses = courses.findAll();
-  allCourses
-    .then((coursesInfo) => {
-      res.status(200);
-      res.json({ coursesInfo });
-    })
-    .catch((err) => {
-      console.error;
-    });
-});
+  let allCourses =  await courses.findAll({
+
+    include:[
+
+      {
+        model:User,
+      },
+    ],
+  });
+  if (allCoures){
+ res.status(200).json(allCourses);
+ process.exit();
+  }
+  }
+))
+  
 
 router.get("/courses/:id", (req, res) => {
   /* Return the corresponding course including the User object associated 
   with that course and a 200 HTTP status code.
   */
-  let course = courses.findByPk(req.params.id);
+  let course = courses.findByPk(req.params.id, {include:{
+    model:users,
+    attributes:['firstName','lastName', 'emailAddress']
+  }
+  })
+  
+ 
   if (course) {
     course.then((courseInfo) => {
       res.status(200);
-      res.json({ courseInfo });
+      res.json(courseInfo )})
+    }
     })
-  }
-});
+
+
 
 //Post Routes
 
