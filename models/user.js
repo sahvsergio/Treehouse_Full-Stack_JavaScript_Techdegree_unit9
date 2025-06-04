@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: {
             msg: "A first name  is required",
           },
+          notNull:{
+            msg:"A first name is required"
+          },
         },
       },
       lastName: {
@@ -36,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: {
             msg: "last name  is required",
           },
+          notNull:{
+            msg:'Last Name is required'
+          }
         },
       },
       emailAddress: {
@@ -66,8 +72,12 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: {
             msg: "password  is required",
           },
+          notNull:{
+            msg:"Password is required",
+          }
+          },
         },
-      },
+     
     },
     {
       sequelize,

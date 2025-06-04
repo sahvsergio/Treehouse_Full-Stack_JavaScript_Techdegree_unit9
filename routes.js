@@ -59,25 +59,25 @@ router.get("/courses/:id", (req, res) => {
 
 //Post Routes
 
-router.post("/users", (req, res, next) => {
+router.post("/users", async(req, res, next) => {
   /*This route should create a new user, 
   set the Location header to "/", 
   and return a 201 HTTP status code and no content.*/
-  users.create(req.body).then((newUser)=>{
+  await users.create(req.body).then((newUser)=>{
     res.location('/').status(201).end()
 
 
   }).catch((err)=>{
     res.location('/').status(400);
     if (err.name==='SequelizeValidationError'){
-      
+      const errors = err.errors.map((err) => err.message);
+
       //res.json(`
-        //  ${err.name}:
-        //${err.type}
-       //${err.message}
+      //  ${err.name}:
+      //${err.type}
+      //${err.message}
       //`);
-      res.json(err.message).end();
-     
+      res.json({"errors":errors}).end();
     }
     else{
       next(err);
@@ -103,21 +103,27 @@ router.post(
       
       res.status(400).res.json({ message: "New Course info was invalid" });
     } else {
+      
       newCourse = await courses.create(course);
       newId = await newCourse.id;
       const location = `/courses/${newId}`;
 
       res.location(location).status(201).end();
-    }
+    
+
   }
+}
   catch(err){
     if (err.name === "SequelizeValidationError") {
+      const errors = err.errors.map((err) => err.message);
+      
+
       //res.json(`
       //  ${err.name}:
       //${err.type}
       //${err.message}
       //`);
-      res.status(400).json(err.message).end();
+      res.status(400).json({ errors: errors }).end();
     } else {
       next(err);
     }
@@ -148,12 +154,13 @@ router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res,next) =
   }}
 catch(err){
   if (err.name === "SequelizeValidationError") {
+    const errors = err.errors.map((err) => err.message);
     //res.json(`
     //  ${err.name}:
     //${err.type}
     //${err.message}
     //`);
-    res.status(400).json(err.message).end();
+    res.status(400).json({"errors":errors}).end();
   } else {
     next(err);
   }

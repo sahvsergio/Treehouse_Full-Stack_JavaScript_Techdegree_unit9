@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         validate:{
           notEmpty:{
             msg:"Title cannot be empty"
+          },
+          notNull:{
+            msg:"Title cannot be empty"
           }
         }
       },
@@ -33,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         validate:{
           notEmpty:{
             msg:"Description cannot be empty "
+          },
+          notNull:{
+            msg:"Description cannot be empty"
           }
         }
       },
