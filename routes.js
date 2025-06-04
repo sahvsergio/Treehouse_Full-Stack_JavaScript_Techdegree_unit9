@@ -139,7 +139,7 @@ router.put("/courses/:id",authenticateUser, asyncHandler(async (req, res,next) =
   try{
   course =  await courses.findByPk(req.params.id);
   if(!course){
-    res.status(500).json({message:'No course found'});
+    res.status(404).json({message:'No course found'});
   }
   else{
   course.update(req.body);
