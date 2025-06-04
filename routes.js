@@ -88,7 +88,7 @@ router.post("/users", async(req, res, next) => {
 
 
 router.post(
-  "/courses/",
+  "/courses/",authenticateUser,
   
  async (req, res,next) => {
     /*Create a new course, set the Location
